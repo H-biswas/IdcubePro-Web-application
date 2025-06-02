@@ -82,5 +82,39 @@ classdef UpdateImage
             imshow(RGB,[],'Parent', app.image_axes);
             axis(app.image_axes, 'image')
         end
+        function updateImage_PCA(app)
+            val=app.Slider_PCA.Value;
+            outputDataCube=  getappdata(0,'myDataPCA');
+            I=outputDataCube(:,:,round(val));
+            imshow(I,[],'Parent', app.axes_PCA);
+            setappdata(0,'I',I)
+            colormap(app.axes_PCA,jet)
+            colorbar(app.axes_PCA, "Color", [1 1 1])
+            setappdata(0,'myDataPCA',outputDataCube)
+            axis(app.axes_PCA, 'image')
+        end
+        function updateRGB_PCA(app)
+            outputDataCube=  getappdata(0,'myDataPCA');
+            Image = im2double(outputDataCube); 
+
+            band1 = round(app.Slider_PCA_1.Value);
+            band2 = round(app.Slider_PCA_2.Value);
+            band3 = round(app.Slider_PCA_3.Value);
+            
+            R = Image(:, :, band1);
+            G = Image(:, :, band2);
+            B = Image(:, :, band3);
+        
+            R = mat2gray(R);
+            G = mat2gray(G);
+            B = mat2gray(B);
+        
+            RGB = cat(3, R, G, B);
+            
+            axes(app.image_axes);
+            colorbar(app.axes_PCA, 'off')
+            imshow(RGB,[],'Parent', app.axes_PCA);
+            axis(app.axes_PCA, 'image')
+        end
     end
 end
